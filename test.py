@@ -1,14 +1,14 @@
-import tkinter
-import tkinter.messagebox as tkMessageBox
+import matplotlib.pyplot as plt
+import numpy as np
 
-top = tkinter.Tk()
+x = np.linspace(0, 10*np.pi, 100)
+y = np.sin(x)
 
+plt.ion()
+fig = plt.figure()
+ax = fig.add_subplot(111)
+line1, = ax.plot(x, y, 'b-')
 
-def helloCallBack():
-    tkMessageBox.showinfo("Hello Python", "Hello World")
-
-
-B = tkinter.Button(top, text="Hello", command=helloCallBack)
-
-B.pack()
-top.mainloop()
+for phase in np.linspace(0, 10*np.pi, 100):
+    line1.set_ydata(np.sin(0.5 * x + phase))
+    fig.canvas.draw()

@@ -21,7 +21,7 @@ def helloCallBack():
 
 def callbackData():
     global cnt
-    cnt += 1
+    cnt += 100
     return dummyData(cnt)
 
 
