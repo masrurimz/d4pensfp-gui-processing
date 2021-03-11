@@ -10,6 +10,7 @@ from matplotlib.figure import Figure
 
 
 from plotter import Plotter
+from db import Db
 # from mining import *
 
 cnt = 0
@@ -64,7 +65,6 @@ class GUI(Frame):
             row=5, column=1, sticky=tk.NSEW, padx=3, pady=3)
         btUpdate = tk.Button(master=self.master, text="Update", command=lambda: self.plotter.updateData(callbackData())).grid(
             row=6, column=1, sticky=tk.NSEW, padx=3, pady=3)
-
 
 window = GUI(Plotter(1000))
 window.initWindow()
