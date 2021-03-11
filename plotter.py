@@ -15,7 +15,7 @@ class Plotter:
         self.axs[0, 1].set_ylim(self.ylim)
 
         # Draw dummy line
-        self.ydata = np.full((1, data2bePlotted), 2047.5)
+        self.ydata = np.full((2, data2bePlotted), 2047.5)
         self.line1, = self.axs[0, 0].plot(self.ydata[0])
         self.line2, = self.axs[0, 1].plot(self.ydata[1])
         self.fig.tight_layout()
