@@ -21,7 +21,6 @@ class Plotter:
         self.fig.tight_layout()
 
     def updateData(self, newData):
-        print(newData)
         self.line1.set_ydata(newData[0])
         self.line2.set_ydata(newData[1])
         self.fig.canvas.draw()
