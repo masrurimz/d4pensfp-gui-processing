@@ -121,5 +121,6 @@ class Serial():
         print("Closing")
         self.isRun = False
         self.thread.join()
+        self.thread = None
         self.serialConnection.write('s'.encode('ascii'))
         self.serialConnection.flushInput()
