@@ -36,9 +36,12 @@ class GUI(Frame):
         self.figure = plotter.fig
         self.port = StringVar(self.master)
         self.portList = ['Empty']
+
         self.serialConnStatus = StringVar(
             master=self.master, value='Disconnected')
-        # self.serialConnStatus.set('Disconnected')
+        self.serialTransmissionStatus = StringVar(
+            master=self.master, value='Stanby')
+
         self.startUp()
 
     def startUp(self):
@@ -67,9 +70,9 @@ class GUI(Frame):
         self.lbTransmissionStats = tk.Label(
             self.master, text="Status Transmisi")
         self.txtTransmissionStats = tk.Label(
-            self.master, text="Receiving/Stop")
+            self.master, textvariable=self.serialTransmissionStatus)
         self.btTransmissionStats = tk.Button(
-            self.master, text="Start/Stop Receiving")
+            self.master, text="Start/Stop Receiving", command=self.serialToggleTransmission)
         self.lbFileName = tk.Label(self.master, text="File Name")
         self.inptFileName = tk.Entry(self.master, text="")
         self.inptFileIndex = tk.Entry(self.master, text="")
@@ -129,3 +132,13 @@ class GUI(Frame):
         else:
             self.serial.disconnect()
             self.serialConnStatus.set('Disconnected')
+
+    def serialToggleTransmission(self):
+        if self.serialTransmissionStatus.get() == 'Stanby':
+            self.serial.startReceiving()
+            self.serialTransmissionStatus.set('Receiving')
+
+        else:
+            self.serial.stopReceiving()
+            self.serialTransmissionStatus.set('Stanby')
+            print(self.serial.getDataFormatted())
