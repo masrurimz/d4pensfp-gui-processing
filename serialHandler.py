@@ -24,13 +24,14 @@ class Serial():
         self.isReceiving = False
         self.thread = None
 
-    def scanAllPort():
-        """ Lists serial port names
+    def scanAllPort(self):
+        """Lists Serial Port Names
 
-            :raises EnvironmentError:
-                On unsupported or unknown platforms
-            :returns:
-                A list of the serial ports available on the system
+        Raises:
+            EnvironmentError: On unsupported or unkown platforms
+
+        Returns:
+            Array of string: A list of the serial ports available on the system
         """
         if sys.platform.startswith('win'):
             ports = ['COM%s' % (i + 1) for i in range(256)]
@@ -50,6 +51,8 @@ class Serial():
                 result.append(port)
             except (OSError, serial.SerialException):
                 pass
+
+        print('List Ports : ', result)
         return result
 
     def connect(self):
@@ -65,8 +68,3 @@ class Serial():
         except:
             print("Failed to connect with " + str(self.Port) +
                   ' at ' + str(self.Baud) + ' BAUD.')
-
-
-if __name__ == '__main__':
-    ser = Serial()
-    print(Serial.scanAllPort())
