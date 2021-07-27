@@ -127,4 +127,5 @@ class GUI(Frame):
             if res:
                 self.serialConnStatus.set('Connected')
         else:
-            print('Already Connected')
+            self.serial.disconnect()
+            self.serialConnStatus.set('Disconnected')

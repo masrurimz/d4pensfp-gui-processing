@@ -71,3 +71,7 @@ class Serial():
             print("Failed to connect with " + str(self.Port) +
                   ' at ' + str(self.Baud) + ' BAUD.')
             return False
+
+    def disconnect(self):
+        self.serialConnection.close()
+        print('Successfully disconnected from port ', self.Port)
