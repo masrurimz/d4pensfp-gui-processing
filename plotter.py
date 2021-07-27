@@ -20,8 +20,9 @@ class Plotter:
         self.line2, = self.axs[0, 1].plot(self.ydata[1])
         self.fig.tight_layout()
 
-    def updateData(self, newData):
-        self.line1.set_ydata(newData[0])
-        self.line2.set_ydata(newData[1])
+    def updateData(self, newData: np.ndarray):
+        data = newData.reshape(2, 1000)
+        self.line1.set_ydata(data[0])
+        self.line2.set_ydata(data[1])
         self.fig.canvas.draw()
         self.fig.canvas.flush_events()

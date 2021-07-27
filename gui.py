@@ -143,3 +143,8 @@ class GUI(Frame):
         else:
             self.serial.stopReceiving()
             self.serialTransmissionStatus.set('Stanby')
+            data = self.serial.getDataFormatted()
+            self.graphPlotData(data)
+
+    def graphPlotData(self, data):
+        self.db.add_data(data)
