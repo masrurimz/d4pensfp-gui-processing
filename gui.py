@@ -4,6 +4,8 @@ import numpy as np
 
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
+from threading import Timer
+
 cnt = 0
 
 
@@ -137,8 +139,7 @@ class GUI(Frame):
         if self.serialTransmissionStatus.get() == 'Stanby':
             self.serial.startReceiving()
             self.serialTransmissionStatus.set('Receiving')
-
+            Timer(2.0, self.serialToggleTransmission).start()
         else:
             self.serial.stopReceiving()
             self.serialTransmissionStatus.set('Stanby')
-            print(self.serial.getDataFormatted())
