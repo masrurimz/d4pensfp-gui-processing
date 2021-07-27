@@ -55,7 +55,8 @@ class Serial():
         print('List Ports : ', result)
         return result
 
-    def connect(self):
+    def connect(self, port):
+        self.Port = port
         print('Trying to connect to: ' + str(self.Port) +
               ' at ' + str(self.Baud) + ' BAUD.')
         try:
@@ -65,6 +66,8 @@ class Serial():
             self.serialConnection.reset_input_buffer()
             print('Connected to ' + str(self.Port) +
                   ' at ' + str(self.Baud) + ' BAUD.')
+            return True
         except:
             print("Failed to connect with " + str(self.Port) +
                   ' at ' + str(self.Baud) + ' BAUD.')
+            return False

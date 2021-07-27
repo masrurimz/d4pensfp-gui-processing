@@ -35,7 +35,10 @@ class GUI(Frame):
         self.master = tk.Tk()
         self.figure = plotter.fig
         self.port = StringVar(self.master)
-        self.portList = []
+        self.portList = ['Empty']
+        self.serialConnStatus = StringVar(
+            master=self.master, value='Disconnected')
+        # self.serialConnStatus.set('Disconnected')
         self.startUp()
 
     def startUp(self):
@@ -44,7 +47,6 @@ class GUI(Frame):
         self.initComponent()
         self.configureLayout()
         self.master.mainloop()
-        self.port.set("Monday")
 
     def initComponent(self):
         self.canvas = FigureCanvasTkAgg(self.figure, master=self.master)
@@ -54,13 +56,14 @@ class GUI(Frame):
         self.txtAction = tk.Label(self.master, text="Action A, B, C")
         self.lbConnectionStats = tk.Label(self.master, text="Status Koneksi")
         self.txtConnectionStats = tk.Label(
-            self.master, text="Connected Disconnect")
-        self.btConnection = tk.Button(self.master, text="Connect/Disconnect")
+            self.master, textvariable=self.serialConnStatus)
+        self.btConnection = tk.Button(
+            self.master, text="Connect/Disconnect", command=self.serialToggleConnection)
         self.lbPort = tk.Label(self.master, text="Daftar Port")
         self.optPortList = tk.OptionMenu(
             self.master, self.port, *self.portList)
         self.btPortScan = tk.Button(
-            self.master, text="Scan", command=self.updatePortList)
+            self.master, text="Scan", command=self.serialPortListUpdate)
         self.lbTransmissionStats = tk.Label(
             self.master, text="Status Transmisi")
         self.txtTransmissionStats = tk.Label(
@@ -110,10 +113,18 @@ class GUI(Frame):
         listPort = self.serial.scanAllPort()
         print(listPort)
 
-    def updatePortList(self):
+    def serialPortListUpdate(self):
         self.portList = self.serial.scanAllPort()
         menu = self.optPortList["menu"]
         menu.delete(0, "end")
         for string in self.portList:
             menu.add_command(label=string,
                              command=lambda value=string: self.port.set(value))
+
+    def serialToggleConnection(self):
+        if self.serialConnStatus.get() == 'Disconnected':
+            res = self.serial.connect(self.port.get())
+            if res:
+                self.serialConnStatus.set('Connected')
+        else:
+            print('Already Connected')
