@@ -104,9 +104,8 @@ class Serial():
                 value = struct.unpack('H', self.serialRAWData[
                     x * self.DataBytesSize: x * self.DataBytesSize + self.DataBytesSize])
                 self.DataUnpacked.append(value)
-            data2Format = [x[0] for x in self.DataUnpacked]
-            dataReshaped = [
-                data2Format[i * n: (i + 1) * n] for i in range((len(data2Format) + n - 1) // n)]
+            data2Format = np.array([x[0] for x in self.DataUnpacked])
+            dataReshaped = np.array(np.split(data2Format, len(data2Format)/n))
             print(self.DataFormatted.shape)
             self.DataFormatted = np.concatenate(
                 (self.DataFormatted, dataReshaped), axis=0)
