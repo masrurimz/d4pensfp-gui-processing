@@ -6,6 +6,11 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 from threading import Timer
 
+from numpy.core.defchararray import index
+
+from db import Db
+from serialHandler import Serial
+
 cnt = 0
 
 
@@ -29,7 +34,7 @@ def dummyData(n):
 
 
 class GUI(Frame):
-    def __init__(self, plotter, db, serial):
+    def __init__(self, plotter, db: Db, serial: Serial):
         Frame.__init__(self)
         self.plotter = plotter
         self.db = db
@@ -38,6 +43,7 @@ class GUI(Frame):
         self.figure = plotter.fig
         self.port = StringVar(self.master)
         self.portList = ['Empty']
+        self.folderPath = './Dataset/'
 
         self.serialConnStatus = StringVar(
             master=self.master, value='Disconnected')
@@ -79,7 +85,8 @@ class GUI(Frame):
         self.inptFileName = tk.Entry(self.master, text="")
         self.inptFileIndex = tk.Entry(self.master, text="")
         self.txtFileStats = tk.Label(self.master, text="Saving")
-        self.btFileSave = tk.Button(self.master, text="Save Data")
+        self.btFileSave = tk.Button(
+            self.master, text="Save Data", command=self.dataSave)
         self.btQuit = tk.Button(
             master=self.master, text="Quit", command=self.master.quit)
         self.btUpdate = tk.Button(master=self.master, text="Update",
@@ -148,3 +155,19 @@ class GUI(Frame):
 
     def graphPlotData(self, data):
         self.db.add_data(data)
+
+    def dataSave(self):
+        fileName = self.inptFileName.get()
+        fileIndexRAW = self.inptFileIndex.get()
+        fileIndex = int(fileIndexRAW) if len(fileIndexRAW) else 0
+        fileFullPath = self.folderPath + fileName + str(fileIndex) + '.npy'
+
+        data = self.db.get_plot_data(1000)
+
+        with open(fileFullPath, 'wb') as f:
+            np.save(f, data)
+            print(fileFullPath, 'Saved')
+
+            fileIndex += 1
+            self.inptFileIndex.delete(0, END)
+            self.inptFileIndex.insert(0, str(fileIndex))
